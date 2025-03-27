@@ -19,7 +19,7 @@ export class KafkaConsumer {
 
   constructor() {
     const kafka = new Kafka({
-      clientId: process.env.KAFKA_CLIENT_ID || 'orders-api',
+      clientId: 'order-consumer-' + crypto.randomUUID(),
       brokers: [process.env.KAFKA_BOOTSTRAP_SERVERS || 'localhost:9092'],
     });
 
@@ -120,4 +120,4 @@ export class KafkaConsumer {
   }
 }
 
-export default new KafkaConsumer();
+export default KafkaConsumer;

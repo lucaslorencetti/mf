@@ -1,5 +1,4 @@
 import { Kafka } from 'kafkajs';
-import config from '../config';
 
 // Sample order data
 const sampleOrders = [
@@ -34,8 +33,8 @@ const sampleOrders = [
 
 // Create Kafka producer
 const kafka = new Kafka({
-  clientId: config.kafka.clientId,
-  brokers: config.kafka.brokers,
+  clientId: process.env.KAFKA_CLIENT_ID || 'mock-producer',
+  brokers: [process.env.KAFKA_BROKERS || 'localhost:9092'],
 });
 
 const producer = kafka.producer();
@@ -44,7 +43,7 @@ const producer = kafka.producer();
 const sendOrder = async (order: any) => {
   try {
     await producer.send({
-      topic: config.kafka.topics.orders,
+      topic: process.env.KAFKA_TOPICS_ORDERS || 'orders',
       messages: [
         {
           key: order.order_id,
