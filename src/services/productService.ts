@@ -1,20 +1,14 @@
 import { PrismaClient } from '@prisma/client';
+import { Product } from '../types';
 
 const prisma = new PrismaClient();
-
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-}
 
 export const getAllProducts = async (): Promise<Product[]> => {
   try {
     const products = await prisma.product.findMany({
       orderBy: {
-        name: 'asc'
-      }
+        name: 'asc',
+      },
     });
 
     // Transform the data to match the expected response format
@@ -22,7 +16,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
       id: product.id,
       name: product.name,
       price: product.price,
-      stock: product.stock
+      stock: product.stock,
     }));
   } catch (error) {
     console.error('Error in product service - getAllProducts:', error);
@@ -33,7 +27,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
 export const getProductById = async (id: string): Promise<Product | null> => {
   try {
     const product = await prisma.product.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!product) {
@@ -45,7 +39,7 @@ export const getProductById = async (id: string): Promise<Product | null> => {
       id: product.id,
       name: product.name,
       price: product.price,
-      stock: product.stock
+      stock: product.stock,
     };
   } catch (error) {
     console.error(`Error in product service - getProductById(${id}):`, error);

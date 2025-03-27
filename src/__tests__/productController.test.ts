@@ -6,14 +6,14 @@ import { getProducts, getProductById } from '../controllers/productController';
 jest.mock('@prisma/client', () => {
   const mockFindMany = jest.fn();
   const mockFindUnique = jest.fn();
-  
+
   return {
     PrismaClient: jest.fn().mockImplementation(() => ({
       product: {
         findMany: mockFindMany,
-        findUnique: mockFindUnique
-      }
-    }))
+        findUnique: mockFindUnique,
+      },
+    })),
   };
 });
 
@@ -21,13 +21,13 @@ describe('Product Controller', () => {
   let mockReq: Partial<Request>;
   let mockRes: Partial<Response>;
   let prisma: PrismaClient;
-  
+
   beforeEach(() => {
     prisma = new PrismaClient();
     mockReq = {};
     mockRes = {
       json: jest.fn(),
-      status: jest.fn().mockReturnThis()
+      status: jest.fn().mockReturnThis(),
     };
   });
 
@@ -43,14 +43,14 @@ describe('Product Controller', () => {
           id: 'prod1',
           name: 'Product 1',
           price: 50.0,
-          stock: 10
+          stock: 10,
         },
         {
           id: 'prod2',
           name: 'Product 2',
           price: 25.0,
-          stock: 20
-        }
+          stock: 20,
+        },
       ];
 
       // Setup mock
@@ -61,23 +61,25 @@ describe('Product Controller', () => {
 
       // Assertions
       expect(prisma.product.findMany).toHaveBeenCalledWith({
-        orderBy: { name: 'asc' }
+        orderBy: { name: 'asc' },
       });
-      
-      expect(mockRes.json).toHaveBeenCalledWith(expect.arrayContaining([
-        expect.objectContaining({
-          id: 'prod1',
-          name: 'Product 1',
-          price: 50.0,
-          stock: 10
-        }),
-        expect.objectContaining({
-          id: 'prod2',
-          name: 'Product 2',
-          price: 25.0,
-          stock: 20
-        })
-      ]));
+
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: 'prod1',
+            name: 'Product 1',
+            price: 50.0,
+            stock: 10,
+          }),
+          expect.objectContaining({
+            id: 'prod2',
+            name: 'Product 2',
+            price: 25.0,
+            stock: 20,
+          }),
+        ]),
+      );
     });
 
     it('should handle errors', async () => {
@@ -92,9 +94,14 @@ describe('Product Controller', () => {
       await getProducts(mockReq as Request, mockRes as Response);
 
       // Assertions
-      expect(console.error).toHaveBeenCalledWith('Error fetching products:', error);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error fetching products:',
+        error,
+      );
       expect(mockRes.status).toHaveBeenCalledWith(500);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Failed to fetch products' });
+      expect(mockRes.json).toHaveBeenCalledWith({
+        error: 'Failed to fetch products',
+      });
     });
   });
 
@@ -105,12 +112,12 @@ describe('Product Controller', () => {
         id: 'prod1',
         name: 'Product 1',
         price: 50.0,
-        stock: 10
+        stock: 10,
       };
 
       // Setup mock request with params
       mockReq = {
-        params: { id: 'prod1' }
+        params: { id: 'prod1' },
       };
 
       // Setup mock
@@ -121,23 +128,23 @@ describe('Product Controller', () => {
 
       // Assertions
       expect(prisma.product.findUnique).toHaveBeenCalledWith({
-        where: { id: 'prod1' }
+        where: { id: 'prod1' },
       });
-      
+
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({
           id: 'prod1',
           name: 'Product 1',
           price: 50.0,
-          stock: 10
-        })
+          stock: 10,
+        }),
       );
     });
 
     it('should return 404 when product is not found', async () => {
       // Setup mock request with params
       mockReq = {
-        params: { id: 'nonexistent' }
+        params: { id: 'nonexistent' },
       };
 
       // Setup mock to return null (not found)
@@ -154,7 +161,7 @@ describe('Product Controller', () => {
     it('should handle errors', async () => {
       // Setup mock request with params
       mockReq = {
-        params: { id: 'prod1' }
+        params: { id: 'prod1' },
       };
 
       // Setup mock to throw error
@@ -168,9 +175,14 @@ describe('Product Controller', () => {
       await getProductById(mockReq as Request, mockRes as Response);
 
       // Assertions
-      expect(console.error).toHaveBeenCalledWith('Error fetching product prod1:', error);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error fetching product prod1:',
+        error,
+      );
       expect(mockRes.status).toHaveBeenCalledWith(500);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Failed to fetch product' });
+      expect(mockRes.json).toHaveBeenCalledWith({
+        error: 'Failed to fetch product',
+      });
     });
   });
 });

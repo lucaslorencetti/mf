@@ -1,36 +1,22 @@
 import { PrismaClient } from '@prisma/client';
+import { Order } from '../types';
 
 const prisma = new PrismaClient();
-
-export interface OrderProduct {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
-
-export interface Order {
-  id: string;
-  customer_id: string;
-  total_amount: number;
-  created_at: Date;
-  products: OrderProduct[];
-}
 
 export const getAllOrders = async (limit: number = 50): Promise<Order[]> => {
   try {
     const orders = await prisma.order.findMany({
       take: limit,
       orderBy: {
-        createdAt: 'desc'
+        createdAt: 'desc',
       },
       include: {
         products: {
           include: {
-            product: true
-          }
-        }
-      }
+            product: true,
+          },
+        },
+      },
     });
 
     // Transform the data to match the expected response format
@@ -43,8 +29,8 @@ export const getAllOrders = async (limit: number = 50): Promise<Order[]> => {
         id: op.productId,
         name: op.product.name,
         price: op.product.price,
-        quantity: op.quantity
-      }))
+        quantity: op.quantity,
+      })),
     }));
   } catch (error) {
     console.error('Error in order service - getAllOrders:', error);
@@ -59,10 +45,10 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
       include: {
         products: {
           include: {
-            product: true
-          }
-        }
-      }
+            product: true,
+          },
+        },
+      },
     });
 
     if (!order) {
@@ -79,8 +65,8 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
         id: op.productId,
         name: op.product.name,
         price: op.product.price,
-        quantity: op.quantity
-      }))
+        quantity: op.quantity,
+      })),
     };
   } catch (error) {
     console.error(`Error in order service - getOrderById(${id}):`, error);

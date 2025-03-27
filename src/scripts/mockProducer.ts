@@ -8,36 +8,34 @@ const sampleOrders = [
     customer_id: 'cust123',
     products: [
       { id: 'prod1', quantity: 2 },
-      { id: 'prod2', quantity: 1 }
+      { id: 'prod2', quantity: 1 },
     ],
-    total_amount: 35.50,
-    created_at: new Date().toISOString()
+    total_amount: 35.5,
+    created_at: new Date().toISOString(),
   },
   {
     order_id: '12346',
     customer_id: 'cust124',
-    products: [
-      { id: 'prod3', quantity: 1 }
-    ],
+    products: [{ id: 'prod3', quantity: 1 }],
     total_amount: 15.99,
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
   },
   {
     order_id: '12347',
     customer_id: 'cust125',
     products: [
       { id: 'prod1', quantity: 3 },
-      { id: 'prod4', quantity: 2 }
+      { id: 'prod4', quantity: 2 },
     ],
     total_amount: 87.75,
-    created_at: new Date().toISOString()
-  }
+    created_at: new Date().toISOString(),
+  },
 ];
 
 // Create Kafka producer
 const kafka = new Kafka({
   clientId: config.kafka.clientId,
-  brokers: config.kafka.brokers
+  brokers: config.kafka.brokers,
 });
 
 const producer = kafka.producer();
@@ -48,11 +46,11 @@ const sendOrder = async (order: any) => {
     await producer.send({
       topic: config.kafka.topics.orders,
       messages: [
-        { 
-          key: order.order_id, 
-          value: JSON.stringify(order) 
-        }
-      ]
+        {
+          key: order.order_id,
+          value: JSON.stringify(order),
+        },
+      ],
     });
     console.log(`Order ${order.order_id} sent successfully`);
   } catch (error) {
@@ -65,14 +63,14 @@ const sendSampleOrders = async () => {
   try {
     await producer.connect();
     console.log('Producer connected to Kafka');
-    
+
     // Send each order with a delay
     for (const order of sampleOrders) {
       await sendOrder(order);
       // Wait 1 second between messages
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    
+
     console.log('All sample orders sent');
   } catch (error) {
     console.error('Error in producer:', error);

@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import * as productService from '../services/productService';
 
-export const getProducts = async (req: Request, res: Response): Promise<void> => {
+export const getProducts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
     const products = await productService.getAllProducts();
     res.json(products);
@@ -11,7 +14,10 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const getProductById = async (req: Request, res: Response): Promise<void> => {
+export const getProductById = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
     const { id } = req.params;
     const product = await productService.getProductById(id);

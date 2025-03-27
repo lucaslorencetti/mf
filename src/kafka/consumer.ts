@@ -1,6 +1,5 @@
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
 import { PrismaClient } from '@prisma/client';
-import config from '../config';
 
 const prisma = new PrismaClient();
 
@@ -20,11 +19,13 @@ export class KafkaConsumer {
 
   constructor() {
     const kafka = new Kafka({
-      clientId: config.kafka.clientId,
-      brokers: config.kafka.brokers,
+      clientId: process.env.KAFKA_CLIENT_ID || 'orders-api',
+      brokers: [process.env.KAFKA_BOOTSTRAP_SERVERS || 'localhost:9092'],
     });
 
-    this.consumer = kafka.consumer({ groupId: config.kafka.groupId });
+    this.consumer = kafka.consumer({
+      groupId: process.env.KAFKA_GROUP_ID || 'orders-consumer-group',
+    });
   }
 
   async connect(): Promise<void> {
@@ -33,7 +34,7 @@ export class KafkaConsumer {
       console.log('Kafka consumer connected');
 
       await this.consumer.subscribe({
-        topic: config.kafka.topics.orders,
+        topic: process.env.KAFKA_TOPICS || 'orders',
         fromBeginning: true,
       });
     } catch (error) {

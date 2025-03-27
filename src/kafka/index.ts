@@ -3,14 +3,14 @@ import kafkaConsumer from './consumer';
 /**
  * Initializes Kafka consumer connection and starts consuming messages
  */
-export const initializeKafka = async (): Promise<void> => {
+export const initialize = async (): Promise<void> => {
   try {
     // Connect to Kafka
     await kafkaConsumer.connect();
-    
+
     // Start consuming messages
     await kafkaConsumer.consume();
-    
+
     console.log('Kafka consumer initialized and consuming messages');
   } catch (error) {
     console.error('Failed to initialize Kafka:', error);
@@ -21,7 +21,7 @@ export const initializeKafka = async (): Promise<void> => {
 /**
  * Gracefully disconnects the Kafka consumer
  */
-export const disconnectKafka = async (): Promise<void> => {
+export const disconnect = async (): Promise<void> => {
   try {
     await kafkaConsumer.disconnect();
     console.log('Kafka consumer disconnected');
@@ -32,6 +32,6 @@ export const disconnectKafka = async (): Promise<void> => {
 };
 
 export default {
-  initialize: initializeKafka,
-  disconnect: disconnectKafka
+  initialize,
+  disconnect,
 };
