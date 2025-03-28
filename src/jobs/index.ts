@@ -1,4 +1,5 @@
 import cron from 'node-cron';
+
 import { initializeProductUpdateJob } from './productUpdateJob';
 
 const scheduledTasks: cron.ScheduledTask[] = [];

@@ -1,4 +1,5 @@
 import cron from 'node-cron';
+
 import { updateProductsFromFile } from '../services/productService';
 
 export const initializeProductUpdateJob = (): cron.ScheduledTask => {

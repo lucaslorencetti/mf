@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import * as orderService from '../services/orderService';
 
 export const getOrders = async (req: Request, res: Response): Promise<void> => {
@@ -17,6 +18,10 @@ export const getOrderById = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
+    if (!id) {
+      res.status(400).json({ error: 'Missing order ID' });
+      return;
+    }
     const order = await orderService.getOrderById(id);
 
     if (!order) {

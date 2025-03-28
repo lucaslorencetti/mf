@@ -1,9 +1,10 @@
 import { PrismaClient } from '@prisma/client';
+
 import { Order, OrderMessage } from '../types';
 
 const prisma = new PrismaClient();
 
-export const getAllOrders = async (limit: number = 50): Promise<Order[]> => {
+export const getAllOrders = async (limit = 50): Promise<Order[]> => {
   try {
     const orders = await prisma.order.findMany({
       take: limit,

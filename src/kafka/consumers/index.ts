@@ -1,6 +1,6 @@
-import OrderConsumer from './orderConsumer';
-import kafka from '../config';
 import { KafkaConsumer } from '../../types';
+import kafka from '../config';
+import OrderConsumer from './orderConsumer';
 
 class ConsumerManager {
   private consumers: KafkaConsumer[] = [];

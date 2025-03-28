@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { sendSampleOrders } from '../scripts/mockProducer';
 
 export const triggerMockProducer = async (req: Request, res: Response) => {

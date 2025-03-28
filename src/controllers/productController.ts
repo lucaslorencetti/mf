@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import * as productService from '../services/productService';
 
 export const getProducts = async (
@@ -20,6 +21,10 @@ export const getProductById = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
+    if (!id) {
+      res.status(400).json({ error: 'Missing product ID' });
+      return;
+    }
     const product = await productService.getProductById(id);
 
     if (!product) {

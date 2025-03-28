@@ -1,8 +1,9 @@
-import express from 'express';
 import cors from 'cors';
-import routes from './routes';
-import kafka from './kafka';
+import express from 'express';
+
 import jobs from './jobs';
+import kafka from './kafka';
+import routes from './routes';
 
 const app = express();
 

@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import orderRoutes from './orderRoutes';
-import productRoutes from './productRoutes';
+
 import dbRoutes from './dbRoutes';
 import mockRoutes from './mockRoutes';
+import orderRoutes from './orderRoutes';
+import productRoutes from './productRoutes';
 
 const router = Router();
 

@@ -1,6 +1,7 @@
 import { Consumer, Kafka } from 'kafkajs';
-import { OrderMessage } from '../../types';
+
 import { processOrder } from '../../services/orderService';
+import { OrderMessage } from '../../types';
 
 class OrderConsumer {
   private consumer: Consumer;

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { resetDatabase } from '../controllers/dbController';
 
 const router = Router();

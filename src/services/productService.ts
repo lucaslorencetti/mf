@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+import path from 'path';
+
 import { Product } from '../types';
 import { readJsonFile } from '../utils/fileUtils';
-import path from 'path';
 
 const prisma = new PrismaClient();
 const PRODUCTS_FILE_PATH = path.resolve('src/data/products.json');

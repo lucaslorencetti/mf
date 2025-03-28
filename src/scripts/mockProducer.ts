@@ -1,5 +1,6 @@
-import { OrderMessage } from '../types';
 import { Kafka } from 'kafkajs';
+
+import { OrderMessage } from '../types';
 
 const sampleOrders = [
   {

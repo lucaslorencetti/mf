@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { triggerMockProducer } from '../controllers/mockController';
 
 const router = Router();
