@@ -1,0 +1,32 @@
+[
+  {
+    "id": "prod1",
+    "name": "Smartphone XYZ",
+    "price": 999.99,
+    "stock": 50
+  },
+  {
+    "id": "prod2",
+    "name": "Laptop Pro",
+    "price": 1499.99,
+    "stock": 25
+  },
+  {
+    "id": "prod3",
+    "name": "Wireless Headphones",
+    "price": 199.99,
+    "stock": 100
+  },
+  {
+    "id": "prod4",
+    "name": "Smart Watch",
+    "price": 299.99,
+    "stock": 75
+  },
+  {
+    "id": "prod5",
+    "name": "Tablet Mini",
+    "price": 399.99,
+    "stock": 30
+  }
+]

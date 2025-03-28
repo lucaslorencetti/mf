@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import routes from './routes';
 import kafka from './kafka';
+import jobs from './jobs';
 
 const app = express();
 
@@ -15,7 +16,12 @@ app.use('/', routes);
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
   try {
+    // Stop all scheduled jobs
+    await jobs.stopAllJobs();
+
+    // Disconnect Kafka
     await kafka.disconnect();
+
     console.log('Server shut down gracefully');
     process.exit(0);
   } catch (error) {
@@ -29,6 +35,9 @@ process.on('SIGINT', async () => {
   try {
     // Initialize Kafka
     await kafka.initialize();
+
+    // Initialize all scheduled jobs
+    await jobs.initializeJobs();
 
     // Start the Express server
     const port = process.env.PORT || 3000;

@@ -24,6 +24,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "kafkajs": "^2.2.4",
+    "node-cron": "^3.0.3",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.14",
+    "@types/node-cron": "^3.0.11",
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
     "eslint": "^9.23.0",
