@@ -3,13 +3,13 @@
     "id": "prod1",
     "name": "Produto 1",
     "price": 20.00,
-    "stock": 50
+    "stock": 100
   },
   {
     "id": "prod2",
     "name": "Produto 2",
     "price": 99.99,
-    "stock": 25
+    "stock": 100
   },
   {
     "id": "prod3",
@@ -21,12 +21,12 @@
     "id": "prod4",
     "name": "Produto 4",
     "price": 1.99,
-    "stock": 75
+    "stock": 100
   },
   {
     "id": "prod5",
     "name": "Produto 5",
     "price": 5.50,
-    "stock": 30
+    "stock": 100
   }
 ]

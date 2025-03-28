@@ -10,10 +10,21 @@ export const getAllOrders = async (limit: number = 50): Promise<Order[]> => {
       orderBy: {
         createdAt: 'desc',
       },
-      include: {
+      select: {
+        id: true,
+        customerId: true,
+        totalAmount: true,
+        createdAt: true,
         products: {
           include: {
-            product: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                stock: true,
+              },
+            },
           },
         },
       },
@@ -41,10 +52,21 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
   try {
     const order = await prisma.order.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        customerId: true,
+        totalAmount: true,
+        createdAt: true,
         products: {
           include: {
-            product: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                stock: true,
+              },
+            },
           },
         },
       },
@@ -74,6 +96,15 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
 
 export const processOrder = async (orderData: OrderMessage): Promise<void> => {
   try {
+    const existingOrder = await prisma.order.findUnique({
+      where: { id: orderData.order_id },
+    });
+
+    if (existingOrder) {
+      console.log(`Order ${orderData.order_id} already processed, skipping`);
+      return;
+    }
+
     await prisma.$transaction(async tx => {
       await tx.order.create({
         data: {
@@ -115,6 +146,9 @@ export const processOrder = async (orderData: OrderMessage): Promise<void> => {
 
     console.log(`Order ${orderData.order_id} processed successfully`);
   } catch (error) {
-    console.error(`Error processing order ${orderData.order_id}:`, error);
+    console.error(
+      `Error in orderService - processOrder(${orderData.order_id}):`,
+      error,
+    );
   }
 };

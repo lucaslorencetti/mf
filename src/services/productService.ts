@@ -1,24 +1,24 @@
 import { PrismaClient } from '@prisma/client';
 import { Product } from '../types';
 import { readJsonFile } from '../utils/fileUtils';
+import path from 'path';
 
 const prisma = new PrismaClient();
-const PRODUCTS_FILE_PATH = 'src/data/products.json';
+const PRODUCTS_FILE_PATH = path.resolve('src/data/products.json');
 
 export const getAllProducts = async (): Promise<Product[]> => {
   try {
-    const products = await prisma.product.findMany({
+    return await prisma.product.findMany({
       orderBy: {
         name: 'asc',
       },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        stock: true,
+      },
     });
-
-    return products.map(product => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      stock: product.stock,
-    }));
   } catch (error) {
     console.error('Error in productService - getAllProducts:', error);
     throw error;
@@ -27,20 +27,15 @@ export const getAllProducts = async (): Promise<Product[]> => {
 
 export const getProductById = async (id: string): Promise<Product | null> => {
   try {
-    const product = await prisma.product.findUnique({
+    return await prisma.product.findUnique({
       where: { id },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        stock: true,
+      },
     });
-
-    if (!product) {
-      return null;
-    }
-
-    return {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      stock: product.stock,
-    };
   } catch (error) {
     console.error(`Error in productService - getProductById(${id}):`, error);
     throw error;
