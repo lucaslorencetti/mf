@@ -1,13 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { Product } from '../types';
-import fs from 'fs';
-import path from 'path';
+import { readJsonFile } from '../utils/fileUtils';
 
 const prisma = new PrismaClient();
-const PRODUCTS_FILE_PATH = path.resolve(
-  process.cwd(),
-  'src/data/products.json',
-);
+const PRODUCTS_FILE_PATH = 'src/data/products.json';
 
 export const getAllProducts = async (): Promise<Product[]> => {
   try {
@@ -54,27 +50,16 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 };
 
 /**
- * Read products from the local JSON file
- */
-export const readProductsFromFile = async (): Promise<Product[]> => {
-  try {
-    const data = await fs.promises.readFile(PRODUCTS_FILE_PATH, 'utf8');
-    return JSON.parse(data) as Product[];
-  } catch (error) {
-    console.error('Error reading products file:', error);
-    return [];
-  }
-};
-
-/**
  * Update products in the database with data from the JSON file
  */
 export const updateProductsFromFile = async (): Promise<void> => {
   try {
     console.log('Starting product update from file...');
-    const products = await readProductsFromFile();
 
-    if (products.length === 0) {
+    // Read products from JSON file using the generic utility
+    const products = await readJsonFile<Product[]>(PRODUCTS_FILE_PATH);
+
+    if (!products || products.length === 0) {
       console.warn('No products found in the file or file could not be read');
       return;
     }

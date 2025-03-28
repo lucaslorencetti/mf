@@ -3,18 +3,20 @@ import { updateProductsFromFile } from '../services/productService';
 
 /**
  * Initialize the cron job for product updates
- * Schedule: Every 30 minutes
+ * Schedule: At minutes 0 and 30 of every hour (0,30 * * * *)
  */
 export const initializeProductUpdateJob = (): cron.ScheduledTask => {
-  console.log('Initializing product update cron job (every 30 minutes)');
+  console.log(
+    'Initializing product update cron job (every 30 minutes - at minutes 0 and 30)',
+  );
 
   // Run immediately on startup
   updateProductsFromFile().catch(error => {
     console.error('Initial product update failed:', error);
   });
 
-  // Schedule the cron job to run every 30 minutes
-  return cron.schedule('*/30 * * * *', async () => {
+  // Schedule the cron job to run at minutes 0 and 30 of every hour
+  return cron.schedule('0,30 * * * *', async () => {
     try {
       await updateProductsFromFile();
     } catch (error) {

@@ -1,3 +1,4 @@
+import { OrderMessage } from '../types';
 import { Kafka } from 'kafkajs';
 
 // Sample order data
@@ -40,7 +41,7 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 
 // Function to send a single order message
-const sendOrder = async (order: any) => {
+const sendOrder = async (order: OrderMessage) => {
   try {
     await producer.send({
       topic: process.env.KAFKA_TOPICS_ORDERS || 'orders',

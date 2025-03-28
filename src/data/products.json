@@ -1,32 +1,32 @@
 [
   {
     "id": "prod1",
-    "name": "Smartphone XYZ",
-    "price": 999.99,
+    "name": "Produto 1",
+    "price": 20.00,
     "stock": 50
   },
   {
     "id": "prod2",
-    "name": "Laptop Pro",
-    "price": 1499.99,
+    "name": "Produto 2",
+    "price": 99.99,
     "stock": 25
   },
   {
     "id": "prod3",
-    "name": "Wireless Headphones",
+    "name": "Produto 3",
     "price": 199.99,
     "stock": 100
   },
   {
     "id": "prod4",
-    "name": "Smart Watch",
-    "price": 299.99,
+    "name": "Produto 4",
+    "price": 1.99,
     "stock": 75
   },
   {
     "id": "prod5",
-    "name": "Tablet Mini",
-    "price": 399.99,
+    "name": "Produto 5",
+    "price": 5.50,
     "stock": 30
   }
 ]
