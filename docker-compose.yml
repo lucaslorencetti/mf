@@ -1,6 +1,7 @@
 version: '3'
 services:
   zookeeper:
+    container_name: zookeeper
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -12,6 +13,7 @@ services:
       - ./kafka-data/zookeeper/log:/var/lib/zookeeper/log
 
   kafka:
+    container_name: kafka
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
@@ -32,6 +34,7 @@ services:
       - ./kafka-data/kafka/data:/var/lib/kafka/data
 
   kafka-ui:
+    container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
     depends_on:
       - kafka
