@@ -13,7 +13,6 @@ export const getAllProducts = async (): Promise<Product[]> => {
       },
     });
 
-    // Transform the data to match the expected response format
     return products.map(product => ({
       id: product.id,
       name: product.name,
@@ -21,7 +20,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
       stock: product.stock,
     }));
   } catch (error) {
-    console.error('Error in product service - getAllProducts:', error);
+    console.error('Error in productService - getAllProducts:', error);
     throw error;
   }
 };
@@ -36,7 +35,6 @@ export const getProductById = async (id: string): Promise<Product | null> => {
       return null;
     }
 
-    // Transform the data to match the expected response format
     return {
       id: product.id,
       name: product.name,
@@ -44,19 +42,13 @@ export const getProductById = async (id: string): Promise<Product | null> => {
       stock: product.stock,
     };
   } catch (error) {
-    console.error(`Error in product service - getProductById(${id}):`, error);
+    console.error(`Error in productService - getProductById(${id}):`, error);
     throw error;
   }
 };
 
-/**
- * Update products in the database with data from the JSON file
- */
 export const updateProductsFromFile = async (): Promise<void> => {
   try {
-    console.log('Starting product update from file...');
-
-    // Read products from JSON file using the generic utility
     const products = await readJsonFile<Product[]>(PRODUCTS_FILE_PATH);
 
     if (!products || products.length === 0) {
@@ -64,27 +56,26 @@ export const updateProductsFromFile = async (): Promise<void> => {
       return;
     }
 
-    // Process each product - update if exists, create if not
-    for (const product of products) {
-      await prisma.product.upsert({
-        where: { id: product.id },
-        update: {
-          name: product.name,
-          price: product.price,
-          stock: product.stock,
-        },
-        create: {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          stock: product.stock,
-        },
-      });
-    }
-
-    console.log(`Successfully updated ${products.length} products from file`);
+    await prisma.$transaction(async tx => {
+      for (const product of products) {
+        await tx.product.upsert({
+          where: { id: product.id },
+          update: {
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+          },
+          create: {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+          },
+        });
+      }
+    });
   } catch (error) {
-    console.error('Error updating products from file:', error);
+    console.error('Error in productService - updateProductsFromFile:', error);
     throw error;
   }
 };

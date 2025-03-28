@@ -1,12 +1,14 @@
 import { Router } from 'express';
-import { getProducts, getProductById } from '../controllers/productController';
+import {
+  getProducts,
+  getProductById,
+  updateProductsFromFileHandler,
+} from '../controllers/productController';
 
 const router = Router();
 
-// GET /products - Get all products
 router.get('/', getProducts);
-
-// GET /products/:id - Get a specific product by ID
 router.get('/:id', getProductById);
+router.post('/update-from-file', updateProductsFromFileHandler);
 
 export default router;

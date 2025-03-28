@@ -33,3 +33,23 @@ export const getProductById = async (
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 };
+
+export const updateProductsFromFileHandler = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    await productService.updateProductsFromFile();
+
+    res.status(200).json({
+      message: 'Products updated successfully from file',
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('Error updating products from file:', error);
+    res.status(500).json({
+      error: 'Failed to update products from file',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};

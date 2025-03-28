@@ -1,7 +1,6 @@
 import { OrderMessage } from '../types';
 import { Kafka } from 'kafkajs';
 
-// Sample order data
 const sampleOrders = [
   {
     order_id: '12345',
@@ -32,7 +31,6 @@ const sampleOrders = [
   },
 ];
 
-// Create Kafka producer
 const kafka = new Kafka({
   clientId: process.env.KAFKA_CLIENT_ID || 'mock-producer',
   brokers: [process.env.KAFKA_BROKERS || 'localhost:9092'],
@@ -40,7 +38,6 @@ const kafka = new Kafka({
 
 const producer = kafka.producer();
 
-// Function to send a single order message
 const sendOrder = async (order: OrderMessage) => {
   try {
     await producer.send({
@@ -52,42 +49,29 @@ const sendOrder = async (order: OrderMessage) => {
         },
       ],
     });
-    console.log(`Order ${order.order_id} sent successfully`);
+    console.log(`SCRIPT - Order ${order.order_id} sent successfully`);
   } catch (error) {
-    console.error(`Error sending order ${order.order_id}:`, error);
+    console.error(`SCRIPT - Error sending order ${order.order_id}:`, error);
   }
 };
 
-// Main function to send all sample orders
 const sendSampleOrders = async () => {
   try {
     await producer.connect();
-    console.log('Producer connected to Kafka');
+    console.log('SCRIPT - Producer connected to Kafka');
 
-    // Send each order with a delay
     for (const order of sampleOrders) {
       await sendOrder(order);
-      // Wait 1 second between messages
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    console.log('All sample orders sent');
+    console.log('SCRIPT - All sample orders sent');
   } catch (error) {
-    console.error('Error in producer:', error);
+    console.error('SCRIPT - Error in producer:', error);
   } finally {
     await producer.disconnect();
-    console.log('Producer disconnected');
+    console.log('SCRIPT - Producer disconnected');
   }
 };
-
-// Run the producer if this file is executed directly
-if (require.main === module) {
-  sendSampleOrders()
-    .then(() => process.exit(0))
-    .catch(error => {
-      console.error('Fatal error:', error);
-      process.exit(1);
-    });
-}
 
 export { sendSampleOrders };

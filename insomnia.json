@@ -1,0 +1,207 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-03-28T15:42:16.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_root",
+      "parentId": "wrk_mercafacil_rest_kafka_api",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/health",
+      "name": "Health Check",
+      "description": "Verifica o status da API",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_mercafacil_rest_kafka_api",
+      "parentId": null,
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Mercafacil REST Kafka API",
+      "description": "API REST com integração Kafka",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_get_products",
+      "parentId": "fld_products",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/products",
+      "name": "Get All Products",
+      "description": "Retorna todos os produtos",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "fld_products",
+      "parentId": "wrk_mercafacil_rest_kafka_api",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Products",
+      "description": "Operações relacionadas a produtos",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_get_product_by_id",
+      "parentId": "fld_products",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/products/prod1",
+      "name": "Get Product by ID",
+      "description": "Retorna um produto específico pelo ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_products_from_file",
+      "parentId": "fld_products",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/products/update-from-file",
+      "name": "Update Products from File",
+      "description": "Atualiza manualmente os produtos a partir do arquivo JSON",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_orders",
+      "parentId": "fld_orders",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/orders",
+      "name": "Get All Orders",
+      "description": "Retorna todos os pedidos (paginados até 50)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "fld_orders",
+      "parentId": "wrk_mercafacil_rest_kafka_api",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Orders",
+      "description": "Operações relacionadas a pedidos",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_get_order_by_id",
+      "parentId": "fld_orders",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/orders/12345",
+      "name": "Get Order by ID",
+      "description": "Retorna um pedido específico pelo ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "req_reset_database",
+      "parentId": "fld_database",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/db/reset",
+      "name": "Reset Database",
+      "description": "Limpa todas as tabelas do banco de dados",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "fld_database",
+      "parentId": "wrk_mercafacil_rest_kafka_api",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Database",
+      "description": "Operações relacionadas ao banco de dados",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_trigger_mock_producer",
+      "parentId": "fld_mock",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "url": "{{ _.baseUrl }}/mock/produce",
+      "name": "Trigger Mock Producer",
+      "description": "Dispara o produtor de mensagens mock para enviar pedidos de exemplo para o Kafka",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "_type": "request"
+    },
+    {
+      "_id": "fld_mock",
+      "parentId": "wrk_mercafacil_rest_kafka_api",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Mock",
+      "description": "Operações relacionadas a dados de teste",
+      "_type": "request_group"
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_mercafacil_rest_kafka_api",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Base Environment",
+      "data": {
+        "baseUrl": "http://localhost:3000"
+      },
+      "_type": "environment"
+    },
+    {
+      "_id": "env_dev",
+      "parentId": "env_base",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Development",
+      "data": {
+        "baseUrl": "http://localhost:3000"
+      },
+      "_type": "environment"
+    },
+    {
+      "_id": "env_prod",
+      "parentId": "env_base",
+      "modified": 1711642936000,
+      "created": 1711642936000,
+      "name": "Production",
+      "data": {
+        "baseUrl": "https://api.example.com"
+      },
+      "_type": "environment"
+    }
+  ]
+}

@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
 import * as dbService from '../services/dbService';
 
-/**
- * Reset the database by deleting all records from all tables
- */
 export const resetDatabase = async (
   req: Request,
   res: Response,

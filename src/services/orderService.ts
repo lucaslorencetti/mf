@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Order } from '../types';
+import { Order, OrderMessage } from '../types';
 
 const prisma = new PrismaClient();
 
@@ -19,7 +19,6 @@ export const getAllOrders = async (limit: number = 50): Promise<Order[]> => {
       },
     });
 
-    // Transform the data to match the expected response format
     return orders.map(order => ({
       id: order.id,
       customer_id: order.customerId,
@@ -33,7 +32,7 @@ export const getAllOrders = async (limit: number = 50): Promise<Order[]> => {
       })),
     }));
   } catch (error) {
-    console.error('Error in order service - getAllOrders:', error);
+    console.error('Error in orderService - getAllOrders:', error);
     throw error;
   }
 };
@@ -55,7 +54,6 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
       return null;
     }
 
-    // Transform the data to match the expected response format
     return {
       id: order.id,
       customer_id: order.customerId,
@@ -69,7 +67,54 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
       })),
     };
   } catch (error) {
-    console.error(`Error in order service - getOrderById(${id}):`, error);
+    console.error(`Error in orderService - getOrderById(${id}):`, error);
     throw error;
+  }
+};
+
+export const processOrder = async (orderData: OrderMessage): Promise<void> => {
+  try {
+    await prisma.$transaction(async tx => {
+      await tx.order.create({
+        data: {
+          id: orderData.order_id,
+          customerId: orderData.customer_id,
+          totalAmount: orderData.total_amount,
+          createdAt: new Date(orderData.created_at),
+          products: {
+            create: orderData.products.map(product => ({
+              productId: product.id,
+              quantity: product.quantity,
+            })),
+          },
+        },
+      });
+
+      for (const product of orderData.products) {
+        const existingProduct = await tx.product.findUnique({
+          where: { id: product.id },
+        });
+
+        if (existingProduct) {
+          await tx.product.update({
+            where: { id: product.id },
+            data: { stock: existingProduct.stock - product.quantity },
+          });
+        } else {
+          await tx.product.create({
+            data: {
+              id: product.id,
+              name: `Product ${product.id}`,
+              price: 0,
+              stock: 100 - product.quantity,
+            },
+          });
+        }
+      }
+    });
+
+    console.log(`Order ${orderData.order_id} processed successfully`);
+  } catch (error) {
+    console.error(`Error processing order ${orderData.order_id}:`, error);
   }
 };
