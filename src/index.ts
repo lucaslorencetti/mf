@@ -24,12 +24,26 @@ process.on('SIGINT', async () => {
   }
 });
 
+// function startListening(port: number) {
+//   app
+//     .listen(port, () => console.log(`Listening on ${port}`))
+//     .on('error', (error) => {
+//       console.log(error);
+//       if (error.code === 'EADDRINUSE' && port < 3100) {
+//         startListening(port + 1);
+//       } else {
+//         // Different error or no port available
+//       }
+//     });
+// }
+
 (async () => {
   try {
     await kafka.initialize();
     await jobs.initializeJobs();
 
-    const port = process.env.PORT || 3000;
+    const port = Number(process.env.PORT) || 3000;
+    // startListening(port);
     app.listen(port, () => {
       console.log(`API - Server running on port ${port}`);
     });

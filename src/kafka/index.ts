@@ -1,13 +1,13 @@
-import KafkaConsumer from './consumer';
+import ConsumerManager from './consumers';
 
-const consumer = new KafkaConsumer();
+const consumerManager = new ConsumerManager();
+
 export const initialize = async (): Promise<void> => {
   try {
-    await consumer.connect();
+    await consumerManager.connectAll();
+    await consumerManager.startConsuming();
 
-    await consumer.consume();
-
-    console.log('KAFKA - Consumer initialized and consuming messages');
+    console.log('KAFKA - System initialized and consuming messages');
   } catch (error) {
     console.error('KAFKA - Failed to initialize Kafka:', error);
     throw error;
@@ -16,10 +16,10 @@ export const initialize = async (): Promise<void> => {
 
 export const disconnect = async (): Promise<void> => {
   try {
-    await consumer.disconnect();
-    console.log('KAFKA - Consumer disconnected');
+    await consumerManager.disconnectAll();
+    console.log('KAFKA - System disconnected');
   } catch (error) {
-    console.error('KAFKA - Error disconnecting Kafka consumer:', error);
+    console.error('KAFKA - Error disconnecting Kafka system:', error);
     throw error;
   }
 };

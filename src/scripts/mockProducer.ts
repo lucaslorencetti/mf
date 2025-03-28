@@ -29,6 +29,76 @@ const sampleOrders = [
     total_amount: 87.75,
     created_at: new Date().toISOString(),
   },
+  {
+    order_id: '12348',
+    customer_id: 'cust125',
+    products: [
+      { id: 'prod1', quantity: 3 },
+      { id: 'prod4', quantity: 2 },
+    ],
+    total_amount: 87.75,
+    created_at: new Date().toISOString(),
+  },
+  {
+    order_id: '12349',
+    customer_id: 'cust126',
+    products: [
+      { id: 'prod1', quantity: 3 },
+      { id: 'prod4', quantity: 2 },
+    ],
+    total_amount: 87.75,
+    created_at: new Date().toISOString(),
+  },
+  {
+    order_id: '12350',
+    customer_id: 'cust127',
+    products: [
+      { id: 'prod1', quantity: 3 },
+      { id: 'prod4', quantity: 2 },
+    ],
+    total_amount: 87.75,
+    created_at: new Date().toISOString(),
+  },
+  {
+    order_id: '12351',
+    customer_id: 'cust128',
+    products: [
+      { id: 'prod1', quantity: 3 },
+      { id: 'prod4', quantity: 2 },
+    ],
+    total_amount: 87.75,
+    created_at: new Date().toISOString(),
+  },
+  {
+    order_id: '12352',
+    customer_id: 'cust129',
+    products: [
+      { id: 'prod1', quantity: 3 },
+      { id: 'prod4', quantity: 2 },
+    ],
+    total_amount: 87.75,
+    created_at: new Date().toISOString(),
+  },
+  {
+    order_id: '12353',
+    customer_id: 'cust130',
+    products: [
+      { id: 'prod1', quantity: 3 },
+      { id: 'prod4', quantity: 2 },
+    ],
+    total_amount: 87.75,
+    created_at: new Date().toISOString(),
+  },
+  {
+    order_id: '12354',
+    customer_id: 'cust131',
+    products: [
+      { id: 'prod1', quantity: 3 },
+      { id: 'prod4', quantity: 2 },
+    ],
+    total_amount: 87.75,
+    created_at: new Date().toISOString(),
+  },
 ];
 
 const kafka = new Kafka({
@@ -62,7 +132,7 @@ const sendSampleOrders = async () => {
 
     for (const order of sampleOrders) {
       await sendOrder(order);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      //await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     console.log('SCRIPT - All sample orders sent');
