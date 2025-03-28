@@ -1,13 +1,14 @@
+/* eslint-disable */
 // @ts-check
-import js from '@eslint/js';
-import globals from 'globals';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
+const js = require('@eslint/js');
+const globals = require('globals');
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
+const tsParser = require('@typescript-eslint/parser');
 
-export default [
+module.exports = [
   js.configs.recommended,
   {
-    ignores: ['dist/**', 'node_modules/**'],
+    ignores: ['dist/**', 'node_modules/**', 'dev.db', 'dev.db-journal', 'kafka-data/**', 'eslint.config.js'],
   },
   {
     files: ['**/*.ts'],
