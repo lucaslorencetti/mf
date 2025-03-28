@@ -41,3 +41,6 @@ kafka-data
 
 # Prisma
 prisma/*.db
+
+dev.db
+dev.db-journal

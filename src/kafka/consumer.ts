@@ -1,18 +1,8 @@
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
 import { PrismaClient } from '@prisma/client';
+import { OrderMessage } from '../types/orderMessage';
 
 const prisma = new PrismaClient();
-
-interface OrderMessage {
-  order_id: string;
-  customer_id: string;
-  products: {
-    id: string;
-    quantity: number;
-  }[];
-  total_amount: number;
-  created_at: string;
-}
 
 export class KafkaConsumer {
   private consumer: Consumer;
