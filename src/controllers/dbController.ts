@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import * as dbService from '../services/dbService';
+import { logError } from '../utils/errorUtils';
 
 export const resetDatabase = async (
   req: Request,
@@ -14,7 +15,7 @@ export const resetDatabase = async (
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Error resetting database:', error);
+    logError('Error in dbController - resetDatabase:', error);
     res.status(500).json({
       error: 'Failed to reset database',
       message: error instanceof Error ? error.message : 'Unknown error',

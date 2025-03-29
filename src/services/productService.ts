@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
 import path from 'path';
 
+import { prisma } from '../db/prisma';
 import { Product } from '../types';
+import { logError } from '../utils/errorUtils';
 import { readJsonFile } from '../utils/fileUtils';
 
-const prisma = new PrismaClient();
 const PRODUCTS_FILE_PATH = path.resolve('src/data/products.json');
 
 export const getAllProducts = async (): Promise<Product[]> => {
@@ -21,7 +21,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
       },
     });
   } catch (error) {
-    console.error('Error in productService - getAllProducts:', error);
+    logError('Error in productService - getAllProducts:', error);
     throw error;
   }
 };
@@ -38,7 +38,7 @@ export const getProductById = async (id: string): Promise<Product | null> => {
       },
     });
   } catch (error) {
-    console.error(`Error in productService - getProductById(${id}):`, error);
+    logError('Error in productService - getProductById:', error);
     throw error;
   }
 };
@@ -48,7 +48,7 @@ export const updateProductsFromFile = async (): Promise<void> => {
     const products = await readJsonFile<Product[]>(PRODUCTS_FILE_PATH);
 
     if (!products || products.length === 0) {
-      console.warn('No products found in the file or file could not be read');
+      logError('No products found in the file or file could not be read');
       return;
     }
 
@@ -71,7 +71,7 @@ export const updateProductsFromFile = async (): Promise<void> => {
       }
     });
   } catch (error) {
-    console.error('Error in productService - updateProductsFromFile:', error);
+    logError('Error in productService - updateProductsFromFile:', error);
     throw error;
   }
 };

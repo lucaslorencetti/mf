@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import * as productService from '../services/productService';
+import { logError } from '../utils/errorUtils';
 
 export const getProducts = async (
   req: Request,
@@ -10,7 +11,7 @@ export const getProducts = async (
     const products = await productService.getAllProducts();
     res.json(products);
   } catch (error) {
-    console.error('Error fetching products:', error);
+    logError('Error in productController - getProducts:', error);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 };
@@ -34,7 +35,10 @@ export const getProductById = async (
 
     res.json(product);
   } catch (error) {
-    console.error(`Error fetching product ${req.params.id}:`, error);
+    logError(
+      `Error in productController - getProductById: ${req.params.id}`,
+      error,
+    );
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 };
@@ -51,7 +55,7 @@ export const updateProductsFromFileHandler = async (
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Error updating products from file:', error);
+    logError('Error in productController - updateProductsFromFile:', error);
     res.status(500).json({
       error: 'Failed to update products from file',
       message: error instanceof Error ? error.message : 'Unknown error',

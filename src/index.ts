@@ -1,9 +1,11 @@
 import cors from 'cors';
 import express from 'express';
 
+import { prisma } from './db/prisma';
 import jobs from './jobs';
 import kafka from './kafka';
 import routes from './routes';
+import { logError, logInfo } from './utils/errorUtils';
 
 const app = express();
 
@@ -16,11 +18,12 @@ process.on('SIGINT', async () => {
   try {
     await jobs.stopAllJobs();
     await kafka.disconnect();
+    await prisma.$disconnect();
 
-    console.log('API - Server shut down gracefully');
+    logInfo('API - Server shut down gracefully');
     process.exit(0);
   } catch (error) {
-    console.error('API - Error during shutdown:', error);
+    logError('API - Error during shutdown:', error);
     process.exit(1);
   }
 });
@@ -32,10 +35,17 @@ process.on('SIGINT', async () => {
 
     const port = Number(process.env.PORT) || 3000;
     app.listen(port, () => {
-      console.log(`API - Server running on port ${port}`);
+      prisma
+        .$connect()
+        .then(() => {
+          logInfo('DB connected!');
+        })
+        .catch(error => logError('DB Error:', error));
+
+      logInfo(`API - Server running on port ${port}`);
     });
   } catch (error) {
-    console.error('API - Failed to start the server:', error);
+    logError('API - Failed to start the server:', error);
     process.exit(1);
   }
 })();

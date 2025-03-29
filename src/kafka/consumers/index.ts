@@ -1,4 +1,5 @@
 import { KafkaConsumer } from '../../types';
+import { logError, logInfo } from '../../utils/errorUtils';
 import kafka from '../config';
 import OrderConsumer from './orderConsumer';
 
@@ -12,9 +13,9 @@ class ConsumerManager {
   async connectAll(): Promise<void> {
     try {
       await Promise.all(this.consumers.map(consumer => consumer.connect()));
-      console.log('KAFKA - All consumers connected');
+      logInfo('KAFKA - All consumers connected');
     } catch (error) {
-      console.error('KAFKA - Error connecting consumers:', error);
+      logError('KAFKA - Error connecting consumers:', error);
       throw error;
     }
   }
@@ -22,9 +23,9 @@ class ConsumerManager {
   async startConsuming(): Promise<void> {
     try {
       await Promise.all(this.consumers.map(consumer => consumer.consume()));
-      console.log('KAFKA - All consumers are now consuming messages');
+      logInfo('KAFKA - All consumers are now consuming messages');
     } catch (error) {
-      console.error('KAFKA - Error starting consumers:', error);
+      logError('KAFKA - Error starting consumers:', error);
       throw error;
     }
   }
@@ -32,9 +33,9 @@ class ConsumerManager {
   async disconnectAll(): Promise<void> {
     try {
       await Promise.all(this.consumers.map(consumer => consumer.disconnect()));
-      console.log('KAFKA - All consumers disconnected');
+      logInfo('KAFKA - All consumers disconnected');
     } catch (error) {
-      console.error('KAFKA - Error disconnecting consumers:', error);
+      logError('KAFKA - Error disconnecting consumers:', error);
       throw error;
     }
   }

@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
-
+import { prisma } from '../db/prisma';
 import { Order, OrderMessage } from '../types';
-
-const prisma = new PrismaClient();
+import { logError, logInfo } from '../utils/errorUtils';
 
 export const getAllOrders = async (limit = 50): Promise<Order[]> => {
   try {
@@ -44,7 +42,7 @@ export const getAllOrders = async (limit = 50): Promise<Order[]> => {
       })),
     }));
   } catch (error) {
-    console.error('Error in orderService - getAllOrders:', error);
+    logError('Error in orderService - getAllOrders:', error);
     throw error;
   }
 };
@@ -90,7 +88,7 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
       })),
     };
   } catch (error) {
-    console.error(`Error in orderService - getOrderById(${id}):`, error);
+    logError('Error in orderService - getOrderById:', error);
     throw error;
   }
 };
@@ -102,7 +100,7 @@ export const processOrder = async (orderData: OrderMessage): Promise<void> => {
     });
 
     if (existingOrder) {
-      console.log(`Order ${orderData.order_id} already processed, skipping`);
+      logInfo('Order already processed, skipping');
       return;
     }
 
@@ -145,11 +143,9 @@ export const processOrder = async (orderData: OrderMessage): Promise<void> => {
       }
     });
 
-    console.log(`Order ${orderData.order_id} processed successfully`);
+    logInfo('Order processed successfully');
   } catch (error) {
-    console.error(
-      `Error in orderService - processOrder(${orderData.order_id}):`,
-      error,
-    );
+    logError('Error in orderService - processOrder:', error);
+    throw error;
   }
 };

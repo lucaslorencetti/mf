@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { logError } from './errorUtils';
+
 export const readJsonFile = async <T>(filePath: string): Promise<T | null> => {
   try {
     const resolvedPath = path.isAbsolute(filePath)
@@ -10,7 +12,7 @@ export const readJsonFile = async <T>(filePath: string): Promise<T | null> => {
     const data = await fs.promises.readFile(resolvedPath, 'utf8');
     return JSON.parse(data) as T;
   } catch (error) {
-    console.error(`Error in fileUtils - readJsonFile(${filePath}):`, error);
+    logError(`Error in fileUtils - readJsonFile(${filePath}):`, error);
     return null;
   }
 };

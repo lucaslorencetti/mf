@@ -1,6 +1,7 @@
 import { Kafka } from 'kafkajs';
 
 import { OrderMessage } from '../types';
+import { logError, logInfo } from '../utils/errorUtils';
 
 const sampleOrders = [
   {
@@ -120,9 +121,9 @@ const sendOrder = async (order: OrderMessage) => {
         },
       ],
     });
-    console.log(`SCRIPT - Order ${order.order_id} sent successfully`);
+    logInfo(`SCRIPT - Order ${order.order_id} sent successfully`);
   } catch (error) {
-    console.error(`SCRIPT - Error sending order ${order.order_id}:`, error);
+    logError(`SCRIPT - Error sending order ${order.order_id}:`, error);
   }
 };
 
@@ -136,12 +137,12 @@ const sendSampleOrders = async () => {
       //await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    console.log('SCRIPT - All sample orders sent');
+    logInfo('SCRIPT - All sample orders sent');
   } catch (error) {
-    console.error('SCRIPT - Error in producer:', error);
+    logError('SCRIPT - Error in producer:', error);
   } finally {
     await producer.disconnect();
-    console.log('SCRIPT - Producer disconnected');
+    logInfo('SCRIPT - Producer disconnected');
   }
 };
 

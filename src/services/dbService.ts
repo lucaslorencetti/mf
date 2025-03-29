@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '../db/prisma';
+import { logError } from '../utils/errorUtils';
 
 export const resetDatabase = async (): Promise<void> => {
   try {
@@ -10,7 +9,7 @@ export const resetDatabase = async (): Promise<void> => {
       await tx.product.deleteMany({});
     });
   } catch (error) {
-    console.error('Error in dbService - resetDatabase:', error);
+    logError('Error in dbService - resetDatabase:', error);
     throw error;
   }
 };
