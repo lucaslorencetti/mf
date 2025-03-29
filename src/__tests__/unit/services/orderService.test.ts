@@ -129,7 +129,6 @@ describe('orderService', () => {
         },
       });
 
-      // Criar vários pedidos no banco de dados
       for (let i = 1; i <= 5; i++) {
         await prisma.order.create({
           data: {
@@ -149,27 +148,22 @@ describe('orderService', () => {
         });
       }
 
-      // Executar a função com limite de 3
       const orders = await getAllOrders(3);
 
-      // Verificar o resultado
       expect(orders).toHaveLength(3);
     });
 
     it('should throw an error when database query fails', async () => {
-      // Simular falha no banco de dados
       jest
         .spyOn(prisma.order, 'findMany')
         .mockRejectedValueOnce(new Error('Database error'));
 
-      // Verificar se a função lança o erro esperado
       await expect(getAllOrders()).rejects.toThrow('Database error');
     });
   });
 
   describe('getOrderById', () => {
     it('should return an order by ID', async () => {
-      // Criar produtos para o pedido
       await prisma.product.create({
         data: {
           id: 'prod1',
@@ -188,7 +182,6 @@ describe('orderService', () => {
         },
       });
 
-      // Criar pedido no banco de dados
       await prisma.order.create({
         data: {
           id: 'order1',
@@ -210,10 +203,8 @@ describe('orderService', () => {
         },
       });
 
-      // Executar a função
       const order = await getOrderById('order1');
 
-      // Verificar o resultado
       expect(order).not.toBeNull();
       expect(order?.id).toBe('order1');
       expect(order?.customer_id).toBe('customer1');
@@ -226,27 +217,22 @@ describe('orderService', () => {
     });
 
     it('should return null when order is not found', async () => {
-      // Executar a função com ID inexistente
       const order = await getOrderById('nonexistent');
 
-      // Verificar o resultado
       expect(order).toBeNull();
     });
 
     it('should throw an error when database query fails', async () => {
-      // Simular falha no banco de dados
       jest
         .spyOn(prisma.order, 'findUnique')
         .mockRejectedValueOnce(new Error('Database error'));
 
-      // Verificar se a função lança o erro esperado
       await expect(getOrderById('order1')).rejects.toThrow('Database error');
     });
   });
 
   describe('processOrder', () => {
     it('should process a new order successfully', async () => {
-      // Criar produtos no banco de dados
       await prisma.product.create({
         data: {
           id: 'prod1',
@@ -256,10 +242,8 @@ describe('orderService', () => {
         },
       });
 
-      // Executar a função
       await processOrder(mockOrderMessage);
 
-      // Verificar se o pedido foi criado
       const order = await prisma.order.findUnique({
         where: { id: mockOrderMessage.order_id },
         include: {
@@ -272,19 +256,16 @@ describe('orderService', () => {
       expect(order?.totalAmount).toBe(mockOrderMessage.total_amount);
       expect(order?.products).toHaveLength(2);
 
-      // Verificar se o estoque do produto foi atualizado
       const product = await prisma.product.findUnique({
         where: { id: 'prod1' },
       });
 
-      expect(product?.stock).toBe(97); // 100 - 3
+      expect(product?.stock).toBe(97);
     });
 
     it('should create missing products when processing an order', async () => {
-      // Executar a função com um produto que não existe
       await processOrder(mockOrderMessage);
 
-      // Verificar se o produto foi criado
       const product = await prisma.product.findUnique({
         where: { id: 'prod3' },
       });
@@ -295,7 +276,6 @@ describe('orderService', () => {
     });
 
     it('should skip processing if order already exists', async () => {
-      // Criar o pedido no banco de dados
       await prisma.order.create({
         data: {
           id: mockOrderMessage.order_id,
@@ -305,23 +285,18 @@ describe('orderService', () => {
         },
       });
 
-      // Espionar o método create para verificar se não é chamado
       const createSpy = jest.spyOn(prisma.order, 'create');
 
-      // Executar a função
       await processOrder(mockOrderMessage);
 
-      // Verificar que o método create não foi chamado
       expect(createSpy).not.toHaveBeenCalled();
     });
 
     it('should handle errors gracefully', async () => {
-      // Simular falha no banco de dados
       jest
         .spyOn(prisma.order, 'findUnique')
         .mockRejectedValueOnce(new Error('Database error'));
 
-      // Executar a função não deve lançar erro
       await expect(processOrder(mockOrderMessage)).rejects.toThrow();
     });
   });
