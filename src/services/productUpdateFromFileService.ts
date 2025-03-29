@@ -7,43 +7,7 @@ import { readJsonFile } from '../utils/fileUtils';
 
 const PRODUCTS_FILE_PATH = path.resolve('src/data/products.json');
 
-export const getAllProducts = async (): Promise<Product[]> => {
-  try {
-    return await prisma.product.findMany({
-      orderBy: {
-        name: 'asc',
-      },
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        stock: true,
-      },
-    });
-  } catch (error) {
-    logError('Error in productService - getAllProducts:', error);
-    throw error;
-  }
-};
-
-export const getProductById = async (id: string): Promise<Product | null> => {
-  try {
-    return await prisma.product.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        stock: true,
-      },
-    });
-  } catch (error) {
-    logError('Error in productService - getProductById:', error);
-    throw error;
-  }
-};
-
-export const updateProductsFromFile = async (): Promise<void> => {
+export const productUpdateFromFileService = async (): Promise<void> => {
   try {
     const products = await readJsonFile<Product[]>(PRODUCTS_FILE_PATH);
 
@@ -71,7 +35,7 @@ export const updateProductsFromFile = async (): Promise<void> => {
       }
     });
   } catch (error) {
-    logError('Error in productService - updateProductsFromFile:', error);
+    logError('Error in productUpdateFromFileService:', error);
     throw error;
   }
 };

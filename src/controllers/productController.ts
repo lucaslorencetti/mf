@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 
-import * as productService from '../services/productService';
+import { productDetailService } from '../services/productDetailService';
+import { productListService } from '../services/productListService';
+import { productUpdateFromFileService } from '../services/productUpdateFromFileService';
 import { logError } from '../utils/errorUtils';
 
 export const getProducts = async (
@@ -8,7 +10,7 @@ export const getProducts = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const products = await productService.getAllProducts();
+    const products = await productListService();
     res.json(products);
   } catch (error) {
     logError('Error in productController - getProducts:', error);
@@ -26,7 +28,7 @@ export const getProductById = async (
       res.status(400).json({ error: 'Missing product ID' });
       return;
     }
-    const product = await productService.getProductById(id);
+    const product = await productDetailService(id);
 
     if (!product) {
       res.status(404).json({ error: 'Product not found' });
@@ -48,7 +50,7 @@ export const updateProductsFromFileHandler = async (
   res: Response,
 ): Promise<void> => {
   try {
-    await productService.updateProductsFromFile();
+    await productUpdateFromFileService();
 
     res.status(200).json({
       message: 'Products updated successfully from file',

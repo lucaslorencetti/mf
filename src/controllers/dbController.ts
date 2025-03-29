@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import * as dbService from '../services/dbService';
+import { resetDatabaseService } from '../services/resetDatabaseService';
 import { logError } from '../utils/errorUtils';
 
 export const resetDatabase = async (
@@ -8,7 +8,7 @@ export const resetDatabase = async (
   res: Response,
 ): Promise<void> => {
   try {
-    await dbService.resetDatabase();
+    await resetDatabaseService();
 
     res.status(200).json({
       message: 'Database reset successful',

@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 
-import { updateProductsFromFile } from '../services/productService';
+import { productUpdateFromFileService } from '../services/productUpdateFromFileService';
 import { logError, logInfo } from '../utils/errorUtils';
 
 export const initializeProductUpdateJob = (): cron.ScheduledTask => {
@@ -10,7 +10,7 @@ export const initializeProductUpdateJob = (): cron.ScheduledTask => {
 
   return cron.schedule('0,30 * * * *', async () => {
     try {
-      await updateProductsFromFile();
+      await productUpdateFromFileService();
       logInfo('JOBS - Scheduled product update completed successfully');
     } catch (error) {
       logError('JOBS - Scheduled product update failed:', error);

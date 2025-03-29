@@ -1,6 +1,6 @@
 import { Consumer, Kafka } from 'kafkajs';
 
-import { processOrder } from '../../services/orderService';
+import { orderProcessingService } from '../../services/orderProcessingService';
 import { OrderMessage } from '../../types';
 import { logError, logInfo } from '../../utils/errorUtils';
 
@@ -36,7 +36,7 @@ class OrderConsumer {
 
           const orderData: OrderMessage = JSON.parse(message.value.toString());
           logInfo(`KAFKA - Received order: ${orderData.order_id}`);
-          await processOrder(orderData);
+          await orderProcessingService(orderData);
         },
       });
     } catch (error) {

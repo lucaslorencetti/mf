@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 
-import * as orderService from '../services/orderService';
+import { orderDetailService } from '../services/orderDetailService';
+import { orderListService } from '../services/orderListService';
 import { logError } from '../utils/errorUtils';
 
 export const getOrders = async (req: Request, res: Response): Promise<void> => {
   try {
-    const orders = await orderService.getAllOrders();
+    const orders = await orderListService();
     res.json(orders);
   } catch (error) {
     logError('Error in orderController - getOrders:', error);
@@ -23,7 +24,7 @@ export const getOrderById = async (
       res.status(400).json({ error: 'Missing order ID' });
       return;
     }
-    const order = await orderService.getOrderById(id);
+    const order = await orderDetailService(id);
 
     if (!order) {
       res.status(404).json({ error: 'Order not found' });
